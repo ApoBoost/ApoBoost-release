@@ -1,0 +1,14 @@
+{
+  "version": "1.0.18",
+  "notes": "配布の仕組みを新しくしました（以後の更新は配布用の置き場から届きます）",
+  "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
+  "published_at": "2026-10-05T02:31:00.197Z",
+  "channels": {
+    "stable": {
+      "version": "1.0.18",
+      "notes": "配布の仕組みを新しくしました（以後の更新は配布用の置き場から届きます）",
+      "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
+      "published_at": "2026-10-05T02:31:00.197Z"
+    }
+  }
+}
