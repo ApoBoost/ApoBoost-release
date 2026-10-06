@@ -1,14 +1,14 @@
 {
-  "version": "1.0.18",
-  "notes": "配布の仕組みを新しくしました（以後の更新は配布用の置き場から届きます）",
+  "version": "1.0.19",
+  "notes": "はじめて入れるときの案内を改善（英語の注意書きを出さない・警告が何度も出ないように・Windowsのインストール後に画面が2つにならないように）",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-05T02:31:00.197Z",
+  "published_at": "2026-10-06T03:14:09.352Z",
   "channels": {
     "stable": {
-      "version": "1.0.18",
-      "notes": "配布の仕組みを新しくしました（以後の更新は配布用の置き場から届きます）",
+      "version": "1.0.19",
+      "notes": "はじめて入れるときの案内を改善（英語の注意書きを出さない・警告が何度も出ないように・Windowsのインストール後に画面が2つにならないように）",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-05T02:31:00.197Z"
+      "published_at": "2026-10-06T03:14:09.352Z"
     }
   }
 }
