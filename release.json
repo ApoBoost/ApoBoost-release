@@ -1,14 +1,14 @@
 {
-  "version": "1.0.22",
-  "notes": "アポの画面の「担当者に渡す（LINE用）」を取りやめました",
+  "version": "1.0.23",
+  "notes": "ログイン画面の地球を新しい3Dの地球に変えました",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-07T02:12:21.992Z",
+  "published_at": "2026-10-11T22:59:16.266Z",
   "channels": {
     "stable": {
-      "version": "1.0.22",
-      "notes": "アポの画面の「担当者に渡す（LINE用）」を取りやめました",
+      "version": "1.0.23",
+      "notes": "ログイン画面の地球を新しい3Dの地球に変えました",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-07T02:12:21.992Z"
+      "published_at": "2026-10-11T22:59:16.266Z"
     }
   }
 }
