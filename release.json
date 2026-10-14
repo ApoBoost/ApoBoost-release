@@ -1,14 +1,14 @@
 {
-  "version": "1.0.23",
-  "notes": "ログイン画面の地球を新しい3Dの地球に変えました",
+  "version": "1.0.24",
+  "notes": "Windowsで、インストールの最後に「いま起動しますか？」でYを押すと画面が閉じる問題を直しました",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-11T22:59:16.266Z",
+  "published_at": "2026-10-14T12:13:32.935Z",
   "channels": {
     "stable": {
-      "version": "1.0.23",
-      "notes": "ログイン画面の地球を新しい3Dの地球に変えました",
+      "version": "1.0.24",
+      "notes": "Windowsで、インストールの最後に「いま起動しますか？」でYを押すと画面が閉じる問題を直しました",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-11T22:59:16.266Z"
+      "published_at": "2026-10-14T12:13:32.935Z"
     }
   }
 }

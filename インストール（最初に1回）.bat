@@ -1,60 +1,63 @@
 @echo off
-chcp 65001 >nul
-rem ApoBoost Windows用インストーラー（最初に1回だけ実行してください）。
-rem Node.js の用意 → 必要な部品の用意 → デスクトップとスタートメニューにショートカットを作成 まで行います。
-rem Node.js が無い・古いときは、このフォルダの中（runtime\）に公式の配布物を自動で用意します。
-rem 書き方の決まり: 括弧のブロック（if ... ( ... ) など）は使わず、goto で1行ずつ書く（ApoBoost起動.bat と同じ理由）
+chcp 932 >nul
+rem �����R�[�h�̌��܂�: ���̃t�@�C���� UTF-8 �ŕҏW���A�z�z�ł����Ƃ��iscripts/build-dist.mjs�j�� Shift_JIS �ɕϊ����Ĕz��B
+rem UTF-8 �{ chcp 65001 ���ƁA���{��� Windows �� cmd ���O�̃R�}���h�̂��ƂɃt�@�C���̓ǂ݈ʒu�𐔂��ԈႦ�A���������̓r���𖽗߂Ƃ��Ď��s���Ă����B
+rem chcp 932 �́A�����R�[�h�� UTF-8 �ɂ��Ă��� Windows�i�x�[�^�̐ݒ�j�ł� Shift_JIS �Ƃ��ēǂ܂��邽��
+rem ApoBoost Windows�p�C���X�g�[���[�i�ŏ���1�񂾂����s���Ă��������j�B
+rem Node.js �̗p�� �� �K�v�ȕ��i�̗p�� �� �f�X�N�g�b�v�ƃX�^�[�g���j���[�ɃV���[�g�J�b�g���쐬 �܂ōs���܂��B
+rem Node.js �������E�Â��Ƃ��́A���̃t�H���_�̒��iruntime\�j�Ɍ����̔z�z���������ŗp�ӂ��܂��B
+rem �������̌��܂�: ���ʂ̃u���b�N�iif ... ( ... ) �Ȃǁj�͎g�킸�Agoto ��1�s�������iApoBoost�N��.bat �Ɠ������R�j
 cd /d "%~dp0"
-title ApoBoost インストール
+title ApoBoost �C���X�g�[��
 
-rem ---- 自動で用意する Node.js（版とハッシュはここ1か所。ApoBoost起動.bat の先頭と同じ値にそろえる）----
-rem 出どころ: https://nodejs.org/dist/index.json（22 系 LTS の最新）と https://nodejs.org/dist/v22.23.3/SHASUMS256.txt（2026-10-05 確認）
+rem ---- �����ŗp�ӂ��� Node.js�i�łƃn�b�V���͂���1�����BApoBoost�N��.bat �̐擪�Ɠ����l�ɂ��낦��j----
+rem �o�ǂ���: https://nodejs.org/dist/index.json�i22 �n LTS �̍ŐV�j�� https://nodejs.org/dist/v22.23.3/SHASUMS256.txt�i2026-10-05 �m�F�j
 set "AB_NODE_VER=v22.23.3"
 set "AB_NODE_SHA=2b0ff57b049cda1bbcea2240eec20467018713c1efe1f7360c2681859b90ed71"
 set "AB_NODE_NAME=node-%AB_NODE_VER%-win-x64"
 
 cls
 echo ============================================
-echo   ApoBoost インストール
+echo   ApoBoost �C���X�g�[��
 echo ============================================
 echo.
-echo このフォルダ: "%CD%"
+echo ���̃t�H���_: "%CD%"
 echo.
 
-rem zip の中から直接開いた場合（ファイルが一時フォルダに1つだけ取り出されて動く）や、ファイルが欠けている場合は止める
+rem zip �̒����璼�ڊJ�����ꍇ�i�t�@�C�����ꎞ�t�H���_��1�������o����ē����j��A�t�@�C���������Ă���ꍇ�͎~�߂�
 if not exist "package.json" goto :notextracted
 if not exist "scripts\run.mjs" goto :notextracted
 
-rem ダウンロードした zip から展開したファイルには「インターネットから来た」印が付き、開くたびに警告が出る。
-rem このファイルを開けた（＝一度許可した）ら、フォルダの中の印を外す（2回目以降・ショートカットから開くときに警告を出さないため）。外せなくても続ける
-rem 1回だけ行う（印が付くのは zip から展開したファイルだけ。アップデートで入れ替わるファイルには付かない）。起動のたびに部品まで数千ファイルを調べると遅くなるため
+rem �_�E�����[�h���� zip ����W�J�����t�@�C���ɂ́u�C���^�[�l�b�g���痈���v�󂪕t���A�J�����тɌx�����o��B
+rem ���̃t�@�C�����J�����i����x�������j��A�t�H���_�̒��̈���O���i2��ڈȍ~�E�V���[�g�J�b�g����J���Ƃ��Ɍx�����o���Ȃ����߁j�B�O���Ȃ��Ă�������
+rem 1�񂾂��s���i�󂪕t���̂� zip ����W�J�����t�@�C�������B�A�b�v�f�[�g�œ���ւ��t�@�C���ɂ͕t���Ȃ��j�B�N���̂��тɕ��i�܂Ő���t�@�C���𒲂ׂ�ƒx���Ȃ邽��
 if exist ".apoboost-unblocked" goto :unblock_done
 set "AB_HERE=%CD%"
 powershell -NoProfile -Command "Get-ChildItem -LiteralPath $env:AB_HERE -Recurse -File -ErrorAction SilentlyContinue | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
 echo ok>".apoboost-unblocked"
 attrib +h ".apoboost-unblocked" >nul 2>&1
 :unblock_done
-rem npm が英語で「新しい版があります」と出すのを止める（購入者には関係が無い）
+rem npm ���p��Łu�V�����ł�����܂��v�Əo���̂��~�߂�i�w���҂ɂ͊֌W�������j
 set "npm_config_update_notifier=false"
 
-rem 置き場所の注意（1回だけ。ApoBoost起動.bat と同じ目印を使う）
+rem �u���ꏊ�̒��Ӂi1�񂾂��BApoBoost�N��.bat �Ɠ����ڈ���g���j
 set "AB_PLACE_SHOWN="
 if exist "node_modules\.apoboost-place-noted" goto :place_done
 echo "%CD%" | findstr /i /l /c:"OneDrive" >nul
 if errorlevel 1 goto :place_done
-echo 【おすすめ】このフォルダは OneDrive の中にあります。
-echo   ここに置いたままだと、部品の用意が失敗しやすく、パソコンの起動時の自動起動も動かないことがあります。
-echo   この画面を閉じて、フォルダごと C:\ApoBoost などに移してから、もう一度このファイルを開くのがおすすめです。
-echo   （このまま進めることもできます。この案内は1回だけ出します）
+echo �y�������߁z���̃t�H���_�� OneDrive �̒��ɂ���܂��B
+echo   �����ɒu�����܂܂��ƁA���i�̗p�ӂ����s���₷���A�p�\�R���̋N�����̎����N���������Ȃ����Ƃ�����܂��B
+echo   ���̉�ʂ���āA�t�H���_���� C:\ApoBoost �ȂǂɈڂ��Ă���A������x���̃t�@�C�����J���̂��������߂ł��B
+echo   �i���̂܂ܐi�߂邱�Ƃ��ł��܂��B���̈ē���1�񂾂��o���܂��j
 echo.
 set "AB_PLACE_SHOWN=1"
 if exist "node_modules" echo ok>"node_modules\.apoboost-place-noted"
 timeout /t 5 /nobreak >nul 2>&1
 :place_done
 
-rem ---- 使う Node.js を決める（ApoBoost起動.bat と同じ順番）----
-rem 1. このフォルダの中に用意した Node.js（runtime\） 2. パソコンに入っている 22 以上の偶数版 3. 公式の配布物を runtime\ に落とす
-rem （インストールは準備をやり直すので、「準備済みなら 20 以上で可」の扱いはしない）。3 に失敗したら、これまでどおり nodejs.org を案内する
+rem ---- �g�� Node.js �����߂�iApoBoost�N��.bat �Ɠ������ԁj----
+rem 1. ���̃t�H���_�̒��ɗp�ӂ��� Node.js�iruntime\�j 2. �p�\�R���ɓ����Ă��� 22 �ȏ�̋����� 3. �����̔z�z���� runtime\ �ɗ��Ƃ�
+rem �i�C���X�g�[���͏�������蒼���̂ŁA�u�����ς݂Ȃ� 20 �ȏ�ŉv�̈����͂��Ȃ��j�B3 �Ɏ��s������A����܂łǂ��� nodejs.org ���ē�����
 set "AB_RT="
 for /d %%d in ("runtime\node-v*-win-x64") do if exist "%%~d\node.exe" set "AB_RT=%CD%\%%~d"
 if exist "runtime\%AB_NODE_NAME%\node.exe" set "AB_RT=%CD%\runtime\%AB_NODE_NAME%"
@@ -85,64 +88,64 @@ set "PATH=%AB_RT%;%PATH%"
 for /f "tokens=*" %%v in ('node -v') do echo Node.js: %%v
 
 echo.
-echo [1/2] 必要な部品をダウンロードしています（1〜5分ほど。画面が止まって見えても動いています）
-echo       画面の中はクリックしないでください（クリックすると止まります。止まったら Enter キーを1回押してください）
-rem 英語の注意書き（部品の古さ・npm の新しい版の案内）は購入者には関係が無く、見て不安になって閉じる人がいるので出さない
+echo [1/2] �K�v�ȕ��i���_�E�����[�h���Ă��܂��i1�`5���قǁB��ʂ��~�܂��Č����Ă������Ă��܂��j
+echo       ��ʂ̒��̓N���b�N���Ȃ��ł��������i�N���b�N����Ǝ~�܂�܂��B�~�܂����� Enter �L�[��1�񉟂��Ă��������j
+rem �p��̒��ӏ����i���i�̌Â��Enpm �̐V�����ł̈ē��j�͍w���҂ɂ͊֌W�������A���ĕs���ɂȂ��ĕ���l������̂ŏo���Ȃ�
 call npm install --no-audit --no-fund --loglevel=error --no-update-notifier
 if errorlevel 1 goto :install_failed
-rem 準備が最後まで通った目印。ApoBoost起動.bat はこれを見て、準備をやり直すかどうかを決める
+rem �������Ō�܂Œʂ����ڈ�BApoBoost�N��.bat �͂�������āA��������蒼�����ǂ��������߂�
 echo ok>"node_modules\.apoboost-ready"
 if "%AB_PLACE_SHOWN%"=="1" echo ok>"node_modules\.apoboost-place-noted"
-rem フォーム操作用のブラウザ（Chromium）は、起動のたびに scripts\run.mjs が確かめて、無ければ裏で入れる
-rem （Edge があればそれを使って先に起動する。ここで数分待たせないため）
+rem �t�H�[������p�̃u���E�U�iChromium�j�́A�N���̂��т� scripts\run.mjs ���m���߂āA������Η��œ����
+rem �iEdge ������΂�����g���Đ�ɋN������B�����Ő����҂����Ȃ����߁j
 
 echo.
-echo [2/2] ショートカットを作成しています
-rem デスクトップの場所は Windows に聞く。OneDrive にデスクトップを移したPCでは、ユーザーフォルダの Desktop が実際のデスクトップと別の場所で、
-rem ショートカットが見えない所に作られていた。1つでも作れなければ失敗として扱う（以前は最後の1つが通れば「作りました」と出ていた）
-rem パスは環境変数で渡す（' を含むフォルダ名でも壊れないように）
-set "AB_TARGET=%CD%\ApoBoost起動.bat"
+echo [2/2] �V���[�g�J�b�g���쐬���Ă��܂�
+rem �f�X�N�g�b�v�̏ꏊ�� Windows �ɕ����BOneDrive �Ƀf�X�N�g�b�v���ڂ���PC�ł́A���[�U�[�t�H���_�� Desktop �����ۂ̃f�X�N�g�b�v�ƕʂ̏ꏊ�ŁA
+rem �V���[�g�J�b�g�������Ȃ����ɍ���Ă����B1�ł����Ȃ���Ύ��s�Ƃ��Ĉ����i�ȑO�͍Ō��1���ʂ�΁u���܂����v�Əo�Ă����j
+rem �p�X�͊��ϐ��œn���i' ���܂ރt�H���_���ł����Ȃ��悤�Ɂj
+set "AB_TARGET=%CD%\ApoBoost�N��.bat"
 set "AB_WORKDIR=%CD%"
-powershell -NoProfile -Command "$ErrorActionPreference = 'Stop'; $ws = New-Object -ComObject WScript.Shell; foreach ($dir in @([Environment]::GetFolderPath('Desktop'), [Environment]::GetFolderPath('Programs'))) { $lnk = $ws.CreateShortcut((Join-Path $dir 'ApoBoost.lnk')); $lnk.TargetPath = $env:AB_TARGET; $lnk.WorkingDirectory = $env:AB_WORKDIR; $lnk.Description = 'フォーム＆メール営業の自動送信ツール'; $lnk.Save() }"
+powershell -NoProfile -Command "$ErrorActionPreference = 'Stop'; $ws = New-Object -ComObject WScript.Shell; foreach ($dir in @([Environment]::GetFolderPath('Desktop'), [Environment]::GetFolderPath('Programs'))) { $lnk = $ws.CreateShortcut((Join-Path $dir 'ApoBoost.lnk')); $lnk.TargetPath = $env:AB_TARGET; $lnk.WorkingDirectory = $env:AB_WORKDIR; $lnk.Description = '�t�H�[�������[���c�Ƃ̎������M�c�[��'; $lnk.Save() }"
 if errorlevel 1 goto :shortcut_failed
-echo → デスクトップとスタートメニューに「ApoBoost」を作りました
+echo �� �f�X�N�g�b�v�ƃX�^�[�g���j���[�ɁuApoBoost�v�����܂���
 goto :shortcut_done
 :shortcut_failed
-echo → ショートカットは作れませんでした。「ApoBoost起動.bat」を直接ダブルクリックしてください。
+echo �� �V���[�g�J�b�g�͍��܂���ł����B�uApoBoost�N��.bat�v�𒼐ڃ_�u���N���b�N���Ă��������B
 :shortcut_done
 
 echo.
 echo ============================================
-echo   インストールが終わりました
+echo   �C���X�g�[�����I���܂���
 echo ============================================
 echo.
-echo 次からは、デスクトップの「ApoBoost」をダブルクリックするだけで起動します。
-echo いま起動しますか？
-choice /c YN /m "起動する(Y) / あとで(N)"
+echo ������́A�f�X�N�g�b�v�́uApoBoost�v���_�u���N���b�N���邾���ŋN�����܂��B
+echo ���܋N�����܂����H
+choice /c YN /m "�N������(Y) / ���Ƃ�(N)"
 if errorlevel 2 goto :later
-rem 同じ窓のまま起動する（別の窓で開くと黒い画面が2つになり、どちらを閉じてよいか迷うため）。
-rem 1行にしてある（待っているあいだにアップデートでこのファイルが置き換わっても、読み直す前に終わるように）
+rem �������̂܂܋N������i�ʂ̑��ŊJ���ƍ�����ʂ�2�ɂȂ�A�ǂ������Ă悢���������߁j�B
+rem 1�s�ɂ��Ă���i�҂��Ă��邠�����ɃA�b�v�f�[�g�ł��̃t�@�C�����u��������Ă��A�ǂݒ����O�ɏI���悤�Ɂj
 call "%AB_TARGET%" & exit /b 0
 :later
-rem 最後は1行にしてある（待っているあいだにアップデートでこのファイルが置き換わっても、読み直す前に終わるように。ApoBoost起動.bat と同じ理由）
-echo. & echo この画面は閉じて構いません。 & pause & exit /b 0
+rem �Ō��1�s�ɂ��Ă���i�҂��Ă��邠�����ɃA�b�v�f�[�g�ł��̃t�@�C�����u��������Ă��A�ǂݒ����O�ɏI���悤�ɁBApoBoost�N��.bat �Ɠ������R�j
+echo. & echo ���̉�ʂ͕��č\���܂���B & pause & exit /b 0
 
-rem ---- ここから下は、上から goto で飛んでくる部分 ----
+rem ---- �������牺�́A�ォ�� goto �Ŕ��ł��镔�� ----
 
 :fetch
-rem 64ビット版の Windows 用だけ用意する（ARM 版の Windows 11 でも動く）
+rem 64�r�b�g�ł� Windows �p�����p�ӂ���iARM �ł� Windows 11 �ł������j
 if /i "%PROCESSOR_ARCHITECTURE%"=="AMD64" goto :fetch_go
 if /i "%PROCESSOR_ARCHITEW6432%"=="AMD64" goto :fetch_go
 if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" goto :fetch_go
-echo → この Windows（%PROCESSOR_ARCHITECTURE%）には自動で用意できません。
+echo �� ���� Windows�i%PROCESSOR_ARCHITECTURE%�j�ɂ͎����ŗp�ӂł��܂���B
 goto :fetch_failed
 :fetch_go
-echo Node.js（%AB_NODE_VER%）をこのフォルダの中に用意します（約40MB。数分かかることがあります）
+echo Node.js�i%AB_NODE_VER%�j�����̃t�H���_�̒��ɗp�ӂ��܂��i��40MB�B���������邱�Ƃ�����܂��j
 if not exist "runtime" mkdir "runtime"
 if exist "runtime\node.zip.part" del /f /q "runtime\node.zip.part"
 if exist "runtime\node.zip" del /f /q "runtime\node.zip"
 if exist "runtime\.extract" rmdir /s /q "runtime\.extract"
-rem PowerShell には、パスと URL を環境変数で渡す（日本語や ' を含むフォルダ名でも壊れないように）
+rem PowerShell �ɂ́A�p�X�� URL �����ϐ��œn���i���{��� ' ���܂ރt�H���_���ł����Ȃ��悤�Ɂj
 set "AB_URL=https://nodejs.org/dist/%AB_NODE_VER%/%AB_NODE_NAME%.zip"
 set "AB_PART=%CD%\runtime\node.zip.part"
 set "AB_ZIP=%CD%\runtime\node.zip"
@@ -153,7 +156,7 @@ if errorlevel 1 goto :fetch_ps
 goto :fetch_verify
 :fetch_ps
 if exist "runtime\node.zip.part" del /f /q "runtime\node.zip.part"
-echo （別の方法でダウンロードしています）
+echo �i�ʂ̕��@�Ń_�E�����[�h���Ă��܂��j
 powershell -NoProfile -Command "$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -UseBasicParsing -Uri $env:AB_URL -OutFile $env:AB_PART; exit 0 } catch { Write-Host $_.Exception.Message; exit 1 }"
 if errorlevel 1 goto :fetch_failed
 :fetch_verify
@@ -162,7 +165,7 @@ certutil -hashfile "runtime\node.zip.part" SHA256 2>nul | findstr /i /l /c:"%AB_
 if not errorlevel 1 goto :fetch_extract
 powershell -NoProfile -Command "if ((Get-FileHash -Algorithm SHA256 -LiteralPath $env:AB_PART).Hash -eq $env:AB_NODE_SHA) { exit 0 } else { exit 1 }"
 if not errorlevel 1 goto :fetch_extract
-echo → ダウンロードしたファイルが壊れていました。
+echo �� �_�E�����[�h�����t�@�C�������Ă��܂����B
 goto :fetch_failed
 :fetch_extract
 move /y "runtime\node.zip.part" "runtime\node.zip" >nul
@@ -179,7 +182,7 @@ if errorlevel 1 goto :fetch_failed
 :fetch_place
 if not exist "runtime\.extract\%AB_NODE_NAME%\node.exe" goto :fetch_failed
 if exist "runtime\%AB_NODE_NAME%" rmdir /s /q "runtime\%AB_NODE_NAME%"
-rem 展開した直後はウイルス対策ソフトが中身を調べていて、フォルダを動かせないことがあるので、少し待って2回まで試し直す
+rem �W�J��������̓E�C���X�΍�\�t�g�����g�𒲂ׂĂ��āA�t�H���_�𓮂����Ȃ����Ƃ�����̂ŁA�����҂���2��܂Ŏ�������
 move "runtime\.extract\%AB_NODE_NAME%" "runtime\%AB_NODE_NAME%" >nul 2>&1
 if not errorlevel 1 goto :fetch_moved
 timeout /t 3 /nobreak >nul 2>&1
@@ -194,12 +197,12 @@ if errorlevel 1 goto :fetch_failed
 del /f /q "runtime\node.zip" >nul 2>&1
 rmdir /s /q "runtime\.extract" >nul 2>&1
 set "AB_RT=%CD%\runtime\%AB_NODE_NAME%"
-echo → 用意できました（Node.js %AB_NODE_VER%）
+echo �� �p�ӂł��܂����iNode.js %AB_NODE_VER%�j
 echo.
 goto :rt_use
 
 :fetch_failed
-echo → Node.js を自動で用意できませんでした（インターネットにつながっているか確かめてください）。
+echo �� Node.js �������ŗp�ӂł��܂���ł����i�C���^�[�l�b�g�ɂȂ����Ă��邩�m���߂Ă��������j�B
 if exist "runtime\node.zip.part" del /f /q "runtime\node.zip.part"
 if exist "runtime\node.zip" del /f /q "runtime\node.zip"
 if exist "runtime\.extract" rmdir /s /q "runtime\.extract"
@@ -207,26 +210,26 @@ if exist "runtime\%AB_NODE_NAME%" rmdir /s /q "runtime\%AB_NODE_NAME%"
 rmdir "runtime" >nul 2>&1
 if "%NODE_MAJOR%"=="0" goto :nonode
 if %NODE_MAJOR% LSS 20 goto :oldnode
-echo → パソコンに入っている Node.js（%NODE_VER%）で、このまま進めます。
+echo �� �p�\�R���ɓ����Ă��� Node.js�i%NODE_VER%�j�ŁA���̂܂ܐi�߂܂��B
 echo.
 goto :node_ok
 
 :nonode
 echo.
-echo 【準備が必要です】Node.js が入っていません。
-echo Node.js のインストーラーをダウンロードします。開いたら案内どおりに入れて、
-echo このファイルをもう一度ダブルクリックしてください。
-echo （会社のパソコンでは、ネットワークの制限で自動の用意が止められていることがあります。その場合は社内のご担当にご相談ください）
+echo �y�������K�v�ł��zNode.js �������Ă��܂���B
+echo Node.js �̃C���X�g�[���[���_�E�����[�h���܂��B�J������ē��ǂ���ɓ���āA
+echo ���̃t�@�C����������x�_�u���N���b�N���Ă��������B
+echo �i��Ђ̃p�\�R���ł́A�l�b�g���[�N�̐����Ŏ����̗p�ӂ��~�߂��Ă��邱�Ƃ�����܂��B���̏ꍇ�͎Г��̂��S���ɂ����k���������j
 start "" "https://nodejs.org/dist/%AB_NODE_VER%/node-%AB_NODE_VER%-x64.msi"
 echo.
 pause
 exit /b 1
 
 :oldnode
-rem Node.js 20 未満では部品（better-sqlite3 など）が動かないため、入れ直してもらう
+rem Node.js 20 �����ł͕��i�ibetter-sqlite3 �Ȃǁj�������Ȃ����߁A���꒼���Ă��炤
 echo.
-echo 【準備が必要です】Node.js が古いため動きません。いま: v%NODE_MAJOR% / 必要: 20 以上
-echo Node.js のインストーラーをダウンロードします。開いたら案内どおりに入れ直して、もう一度このファイルをダブルクリックしてください。
+echo �y�������K�v�ł��zNode.js ���Â����ߓ����܂���B����: v%NODE_MAJOR% / �K�v: 20 �ȏ�
+echo Node.js �̃C���X�g�[���[���_�E�����[�h���܂��B�J������ē��ǂ���ɓ��꒼���āA������x���̃t�@�C�����_�u���N���b�N���Ă��������B
 start "" "https://nodejs.org/dist/%AB_NODE_VER%/node-%AB_NODE_VER%-x64.msi"
 echo.
 pause
@@ -234,16 +237,16 @@ exit /b 1
 
 :install_failed
 echo.
-echo 失敗しました。インターネットにつながっているか確かめて、もう一度このファイルをダブルクリックしてください。
-echo 会社のパソコンでは、ネットワークの制限で止められていることがあります。社内のご担当に、github.com・nodejs.org・registry.npmjs.org・cdn.playwright.dev への接続の許可をご相談ください。
-echo それでも失敗する場合は、この画面を写真に撮って配布元に送ってください。
+echo ���s���܂����B�C���^�[�l�b�g�ɂȂ����Ă��邩�m���߂āA������x���̃t�@�C�����_�u���N���b�N���Ă��������B
+echo ��Ђ̃p�\�R���ł́A�l�b�g���[�N�̐����Ŏ~�߂��Ă��邱�Ƃ�����܂��B�Г��̂��S���ɁAgithub.com�Enodejs.org�Eregistry.npmjs.org�Ecdn.playwright.dev �ւ̐ڑ��̋��������k���������B
+echo ����ł����s����ꍇ�́A���̉�ʂ��ʐ^�ɎB���Ĕz�z���ɑ����Ă��������B
 pause
 exit /b 1
 
 :notextracted
-echo 【準備が必要です】ApoBoost のファイルがそろっていません。
-echo zip の中から直接開いている可能性があります。
-echo zip を右クリック →「すべて展開」で展開し、できたフォルダの中の「インストール（最初に1回）.bat」をダブルクリックしてください。
+echo �y�������K�v�ł��zApoBoost �̃t�@�C����������Ă��܂���B
+echo zip �̒����璼�ڊJ���Ă���\��������܂��B
+echo zip ���E�N���b�N ���u���ׂēW�J�v�œW�J���A�ł����t�H���_�̒��́u�C���X�g�[���i�ŏ���1��j.bat�v���_�u���N���b�N���Ă��������B
 echo.
 pause
 exit /b 1

@@ -1,66 +1,69 @@
 @echo off
-chcp 65001 >nul
-rem ApoBoost（Windows用）ダブルクリックで起動するファイル。
-rem 初回はこのファイルだけで、必要な部品の用意から起動まで全部やります（Node.js が無ければ、このフォルダの中に自動で用意します）。
-rem ※ このファイルはフォルダの中に置いたまま使ってください（移動すると起動できません）
-rem 書き方の決まり: 括弧のブロック（if ... ( ... ) など）は使わず、goto で1行ずつ書く。
-rem ブロックの中では、PATH などに含まれる「)」で構文が壊れたり、変数が1回しか展開されなかったりするため。Windows の実機で試しにくいので単純に保つ
+chcp 932 >nul
+rem �����R�[�h�̌��܂�: ���̃t�@�C���� UTF-8 �ŕҏW���A�z�z�ł����Ƃ��iscripts/build-dist.mjs�j�� Shift_JIS �ɕϊ����Ĕz��B
+rem UTF-8 �{ chcp 65001 ���ƁA���{��� Windows �� cmd ���O�̃R�}���h�̂��ƂɃt�@�C���̓ǂ݈ʒu�𐔂��ԈႦ�A���������̓r���𖽗߂Ƃ��Ď��s���Ă����B
+rem chcp 932 �́A�����R�[�h�� UTF-8 �ɂ��Ă��� Windows�i�x�[�^�̐ݒ�j�ł� Shift_JIS �Ƃ��ēǂ܂��邽��
+rem ApoBoost�iWindows�p�j�_�u���N���b�N�ŋN������t�@�C���B
+rem ����͂��̃t�@�C�������ŁA�K�v�ȕ��i�̗p�ӂ���N���܂őS�����܂��iNode.js ��������΁A���̃t�H���_�̒��Ɏ����ŗp�ӂ��܂��j�B
+rem �� ���̃t�@�C���̓t�H���_�̒��ɒu�����܂܎g���Ă��������i�ړ�����ƋN���ł��܂���j
+rem �������̌��܂�: ���ʂ̃u���b�N�iif ... ( ... ) �Ȃǁj�͎g�킸�Agoto ��1�s�������B
+rem �u���b�N�̒��ł́APATH �ȂǂɊ܂܂��u)�v�ō\������ꂽ��A�ϐ���1�񂵂��W�J����Ȃ������肷�邽�߁BWindows �̎��@�Ŏ����ɂ����̂ŒP���ɕۂ�
 cd /d "%~dp0"
 title ApoBoost
 
-rem ---- 自動で用意する Node.js（版とハッシュはここ1か所。インストール（最初に1回）.bat の先頭と同じ値にそろえる）----
-rem 出どころ: https://nodejs.org/dist/index.json（22 系 LTS の最新）と https://nodejs.org/dist/v22.23.3/SHASUMS256.txt（2026-10-05 確認）
-rem Mac 用の値は ApoBoost起動.command の先頭にある。版を変えるときは3つのファイルをそろえること
+rem ---- �����ŗp�ӂ��� Node.js�i�łƃn�b�V���͂���1�����B�C���X�g�[���i�ŏ���1��j.bat �̐擪�Ɠ����l�ɂ��낦��j----
+rem �o�ǂ���: https://nodejs.org/dist/index.json�i22 �n LTS �̍ŐV�j�� https://nodejs.org/dist/v22.23.3/SHASUMS256.txt�i2026-10-05 �m�F�j
+rem Mac �p�̒l�� ApoBoost�N��.command �̐擪�ɂ���B�ł�ς���Ƃ���3�̃t�@�C�������낦�邱��
 set "AB_NODE_VER=v22.23.3"
 set "AB_NODE_SHA=2b0ff57b049cda1bbcea2240eec20467018713c1efe1f7360c2681859b90ed71"
 set "AB_NODE_NAME=node-%AB_NODE_VER%-win-x64"
 
 cls
 echo ============================================
-echo   ApoBoost を起動します
+echo   ApoBoost ���N�����܂�
 echo ============================================
 echo.
 
-rem zip の中から直接開いた場合（ファイルが一時フォルダに1つだけ取り出されて動く）や、ファイルが欠けている場合は止める
+rem zip �̒����璼�ڊJ�����ꍇ�i�t�@�C�����ꎞ�t�H���_��1�������o����ē����j��A�t�@�C���������Ă���ꍇ�͎~�߂�
 if not exist "package.json" goto :notextracted
 if not exist "scripts\run.mjs" goto :notextracted
 
-rem ダウンロードした zip から展開したファイルには「インターネットから来た」印が付き、開くたびに警告が出る。
-rem このファイルを開けた（＝一度許可した）ら、フォルダの中の印を外す（2回目以降・ショートカットから開くときに警告を出さないため）。外せなくても続ける
-rem 1回だけ行う（印が付くのは zip から展開したファイルだけ。アップデートで入れ替わるファイルには付かない）。起動のたびに部品まで数千ファイルを調べると遅くなるため
+rem �_�E�����[�h���� zip ����W�J�����t�@�C���ɂ́u�C���^�[�l�b�g���痈���v�󂪕t���A�J�����тɌx�����o��B
+rem ���̃t�@�C�����J�����i����x�������j��A�t�H���_�̒��̈���O���i2��ڈȍ~�E�V���[�g�J�b�g����J���Ƃ��Ɍx�����o���Ȃ����߁j�B�O���Ȃ��Ă�������
+rem 1�񂾂��s���i�󂪕t���̂� zip ����W�J�����t�@�C�������B�A�b�v�f�[�g�œ���ւ��t�@�C���ɂ͕t���Ȃ��j�B�N���̂��тɕ��i�܂Ő���t�@�C���𒲂ׂ�ƒx���Ȃ邽��
 if exist ".apoboost-unblocked" goto :unblock_done
 set "AB_HERE=%CD%"
 powershell -NoProfile -Command "Get-ChildItem -LiteralPath $env:AB_HERE -Recurse -File -ErrorAction SilentlyContinue | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
 echo ok>".apoboost-unblocked"
 attrib +h ".apoboost-unblocked" >nul 2>&1
 :unblock_done
-rem npm が英語で「新しい版があります」と出すのを止める（購入者には関係が無い）
+rem npm ���p��Łu�V�����ł�����܂��v�Əo���̂��~�߂�i�w���҂ɂ͊֌W�������j
 set "npm_config_update_notifier=false"
 
-rem 置き場所の注意（1回だけ）。OneDrive の中だと、部品（数万個のファイル）の同期で準備が失敗しやすく、自動起動も動かないことがある
+rem �u���ꏊ�̒��Ӂi1�񂾂��j�BOneDrive �̒����ƁA���i�i�����̃t�@�C���j�̓����ŏ��������s���₷���A�����N���������Ȃ����Ƃ�����
 set "AB_PLACE_SHOWN="
 if exist "node_modules\.apoboost-place-noted" goto :place_done
 echo "%CD%" | findstr /i /l /c:"OneDrive" >nul
 if errorlevel 1 goto :place_done
-echo 【おすすめ】このフォルダは OneDrive の中にあります。
-echo   ここに置いたままだと、部品の用意が失敗しやすく、パソコンの起動時の自動起動も動かないことがあります。
-echo   ApoBoost を止めてから、フォルダごと C:\ApoBoost などに移して使うのがおすすめです。
-echo   （このまま使うこともできます。この案内は1回だけ出します）
+echo �y�������߁z���̃t�H���_�� OneDrive �̒��ɂ���܂��B
+echo   �����ɒu�����܂܂��ƁA���i�̗p�ӂ����s���₷���A�p�\�R���̋N�����̎����N���������Ȃ����Ƃ�����܂��B
+echo   ApoBoost ���~�߂Ă���A�t�H���_���� C:\ApoBoost �ȂǂɈڂ��Ďg���̂��������߂ł��B
+echo   �i���̂܂܎g�����Ƃ��ł��܂��B���̈ē���1�񂾂��o���܂��j
 echo.
 set "AB_PLACE_SHOWN=1"
 if exist "node_modules" echo ok>"node_modules\.apoboost-place-noted"
 timeout /t 3 /nobreak >nul 2>&1
 :place_done
 
-rem 準備ができたかどうかは、npm install が最後まで通ったときに置く目印で見る（ブラウザの用意は起動のたびに scripts\run.mjs が確かめる）。
-rem node_modules があるかだけで見ると、準備の途中で画面を閉じた場合に「済み」と扱われ、英語のエラーで止まり続けていた
-rem 以前の版で準備を済ませたフォルダには目印が無いので、npm が準備を終えたときに作るファイルがあれば済みとみなす
+rem �������ł������ǂ����́Anpm install ���Ō�܂Œʂ����Ƃ��ɒu���ڈ�Ō���i�u���E�U�̗p�ӂ͋N���̂��т� scripts\run.mjs ���m���߂�j�B
+rem node_modules �����邩�����Ō���ƁA�����̓r���ŉ�ʂ�����ꍇ�Ɂu�ς݁v�ƈ����A�p��̃G���[�Ŏ~�܂葱���Ă���
+rem �ȑO�̔łŏ������ς܂����t�H���_�ɂ͖ڈ󂪖����̂ŁAnpm ���������I�����Ƃ��ɍ��t�@�C��������΍ς݂Ƃ݂Ȃ�
 if not exist "node_modules\.apoboost-ready" if exist "node_modules\.package-lock.json" if exist "node_modules\tsx" echo ok>"node_modules\.apoboost-ready"
 
-rem ---- 使う Node.js を決める ----
-rem 1. このフォルダの中に用意した Node.js（runtime\）があれば、それを使う（部品はその Node.js に合わせて用意してあるため）
-rem 2. 無ければ、パソコンに入っている Node.js（20 以上。初回の準備では、部品のビルド済みがある 22 以上の偶数版）
-rem 3. どちらも使えないときは、nodejs.org の公式の配布物を runtime\ に落として使う。失敗したら、これまでどおり nodejs.org を案内する
+rem ---- �g�� Node.js �����߂� ----
+rem 1. ���̃t�H���_�̒��ɗp�ӂ��� Node.js�iruntime\�j������΁A������g���i���i�͂��� Node.js �ɍ��킹�ėp�ӂ��Ă��邽�߁j
+rem 2. ������΁A�p�\�R���ɓ����Ă��� Node.js�i20 �ȏ�B����̏����ł́A���i�̃r���h�ς݂����� 22 �ȏ�̋����Łj
+rem 3. �ǂ�����g���Ȃ��Ƃ��́Anodejs.org �̌����̔z�z���� runtime\ �ɗ��Ƃ��Ďg���B���s������A����܂łǂ��� nodejs.org ���ē�����
 set "AB_RT="
 for /d %%d in ("runtime\node-v*-win-x64") do if exist "%%~d\node.exe" set "AB_RT=%CD%\%%~d"
 if exist "runtime\%AB_NODE_NAME%\node.exe" set "AB_RT=%CD%\runtime\%AB_NODE_NAME%"
@@ -93,45 +96,45 @@ set "PATH=%AB_RT%;%PATH%"
 :node_ok
 for /f "tokens=*" %%v in ('node -v') do echo Node.js: %%v
 if exist "node_modules\.apoboost-ready" goto :ready
-echo 部品を用意しています（1〜5分ほど。画面が止まって見えても動いています。そのままお待ちください）
-echo 画面の中はクリックしないでください（クリックすると止まります。止まったら Enter キーを1回押してください）
-rem 英語の注意書き（部品の古さ・npm の新しい版の案内）は購入者には関係が無く、見て不安になって閉じる人がいるので出さない
+echo ���i��p�ӂ��Ă��܂��i1�`5���قǁB��ʂ��~�܂��Č����Ă������Ă��܂��B���̂܂܂��҂����������j
+echo ��ʂ̒��̓N���b�N���Ȃ��ł��������i�N���b�N����Ǝ~�܂�܂��B�~�܂����� Enter �L�[��1�񉟂��Ă��������j
+rem �p��̒��ӏ����i���i�̌Â��Enpm �̐V�����ł̈ē��j�͍w���҂ɂ͊֌W�������A���ĕs���ɂȂ��ĕ���l������̂ŏo���Ȃ�
 call npm install --no-audit --no-fund --loglevel=error --no-update-notifier
 if errorlevel 1 goto :install_failed
 echo ok>"node_modules\.apoboost-ready"
 if "%AB_PLACE_SHOWN%"=="1" echo ok>"node_modules\.apoboost-place-noted"
 :ready
 
-rem 起動できたらアプリが自分でブラウザを開く
+rem �N���ł�����A�v���������Ńu���E�U���J��
 set FO_OPEN=1
 
 echo.
-echo 起動します。この黒い画面は閉じないでください（閉じると送信も止まります）。
-echo 止めるときは、この画面で Ctrl+C を押して Y を入力してください。
+echo �N�����܂��B���̍�����ʂ͕��Ȃ��ł��������i����Ƒ��M���~�܂�܂��j�B
+echo �~�߂�Ƃ��́A���̉�ʂ� Ctrl+C �������� Y ����͂��Ă��������B
 echo.
-rem ↓ 起動から終わりまでを、わざと1行にしてある。この行のあとに処理を足さないこと。
-rem アップデートは、動いている最中のこのファイルを新しい版に置き換える。cmd は1行実行するごとにファイルを開き直し、
-rem 「次の行があった位置」から読み直すため、npm start が終わったときに長さの違う新しいファイルの途中から読み始め、
-rem 意味の無い命令を実行していた。1行にしておけば、ファイルを読み直す前に exit で終わる。
-rem この行より前の部分は、今後長さが変わっても安全（置き換わるのは、ここを読み終えて npm start が動いているあいだだけのため）
-call npm start & echo. & echo ApoBoostを終了しました。 & pause & exit /b 0
+rem �� �N������I���܂ł��A�킴��1�s�ɂ��Ă���B���̍s�̂��Ƃɏ����𑫂��Ȃ����ƁB
+rem �A�b�v�f�[�g�́A�����Ă���Œ��̂��̃t�@�C����V�����łɒu��������Bcmd ��1�s���s���邲�ƂɃt�@�C�����J�������A
+rem �u���̍s���������ʒu�v����ǂݒ������߁Anpm start ���I������Ƃ��ɒ����̈Ⴄ�V�����t�@�C���̓r������ǂݎn�߁A
+rem �Ӗ��̖������߂����s���Ă����B1�s�ɂ��Ă����΁A�t�@�C����ǂݒ����O�� exit �ŏI���B
+rem ���̍s���O�̕����́A���㒷�����ς���Ă����S�i�u�������̂́A������ǂݏI���� npm start �������Ă��邠���������̂��߁j
+call npm start & echo. & echo ApoBoost���I�����܂����B & pause & exit /b 0
 
-rem ---- ここから下は、上から goto で飛んでくる部分 ----
+rem ---- �������牺�́A�ォ�� goto �Ŕ��ł��镔�� ----
 
 :fetch
-rem 64ビット版の Windows 用だけ用意する（ARM 版の Windows 11 でも動く）
+rem 64�r�b�g�ł� Windows �p�����p�ӂ���iARM �ł� Windows 11 �ł������j
 if /i "%PROCESSOR_ARCHITECTURE%"=="AMD64" goto :fetch_go
 if /i "%PROCESSOR_ARCHITEW6432%"=="AMD64" goto :fetch_go
 if /i "%PROCESSOR_ARCHITECTURE%"=="ARM64" goto :fetch_go
-echo → この Windows（%PROCESSOR_ARCHITECTURE%）には自動で用意できません。
+echo �� ���� Windows�i%PROCESSOR_ARCHITECTURE%�j�ɂ͎����ŗp�ӂł��܂���B
 goto :fetch_failed
 :fetch_go
-echo Node.js（%AB_NODE_VER%）をこのフォルダの中に用意します（約40MB。数分かかることがあります）
+echo Node.js�i%AB_NODE_VER%�j�����̃t�H���_�̒��ɗp�ӂ��܂��i��40MB�B���������邱�Ƃ�����܂��j
 if not exist "runtime" mkdir "runtime"
 if exist "runtime\node.zip.part" del /f /q "runtime\node.zip.part"
 if exist "runtime\node.zip" del /f /q "runtime\node.zip"
 if exist "runtime\.extract" rmdir /s /q "runtime\.extract"
-rem PowerShell には、パスと URL を環境変数で渡す（日本語や ' を含むフォルダ名でも壊れないように）
+rem PowerShell �ɂ́A�p�X�� URL �����ϐ��œn���i���{��� ' ���܂ރt�H���_���ł����Ȃ��悤�Ɂj
 set "AB_URL=https://nodejs.org/dist/%AB_NODE_VER%/%AB_NODE_NAME%.zip"
 set "AB_PART=%CD%\runtime\node.zip.part"
 set "AB_ZIP=%CD%\runtime\node.zip"
@@ -142,7 +145,7 @@ if errorlevel 1 goto :fetch_ps
 goto :fetch_verify
 :fetch_ps
 if exist "runtime\node.zip.part" del /f /q "runtime\node.zip.part"
-echo （別の方法でダウンロードしています）
+echo �i�ʂ̕��@�Ń_�E�����[�h���Ă��܂��j
 powershell -NoProfile -Command "$ProgressPreference='SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -UseBasicParsing -Uri $env:AB_URL -OutFile $env:AB_PART; exit 0 } catch { Write-Host $_.Exception.Message; exit 1 }"
 if errorlevel 1 goto :fetch_failed
 :fetch_verify
@@ -151,7 +154,7 @@ certutil -hashfile "runtime\node.zip.part" SHA256 2>nul | findstr /i /l /c:"%AB_
 if not errorlevel 1 goto :fetch_extract
 powershell -NoProfile -Command "if ((Get-FileHash -Algorithm SHA256 -LiteralPath $env:AB_PART).Hash -eq $env:AB_NODE_SHA) { exit 0 } else { exit 1 }"
 if not errorlevel 1 goto :fetch_extract
-echo → ダウンロードしたファイルが壊れていました。
+echo �� �_�E�����[�h�����t�@�C�������Ă��܂����B
 goto :fetch_failed
 :fetch_extract
 move /y "runtime\node.zip.part" "runtime\node.zip" >nul
@@ -168,7 +171,7 @@ if errorlevel 1 goto :fetch_failed
 :fetch_place
 if not exist "runtime\.extract\%AB_NODE_NAME%\node.exe" goto :fetch_failed
 if exist "runtime\%AB_NODE_NAME%" rmdir /s /q "runtime\%AB_NODE_NAME%"
-rem 展開した直後はウイルス対策ソフトが中身を調べていて、フォルダを動かせないことがあるので、少し待って2回まで試し直す
+rem �W�J��������̓E�C���X�΍�\�t�g�����g�𒲂ׂĂ��āA�t�H���_�𓮂����Ȃ����Ƃ�����̂ŁA�����҂���2��܂Ŏ�������
 move "runtime\.extract\%AB_NODE_NAME%" "runtime\%AB_NODE_NAME%" >nul 2>&1
 if not errorlevel 1 goto :fetch_moved
 timeout /t 3 /nobreak >nul 2>&1
@@ -183,12 +186,12 @@ if errorlevel 1 goto :fetch_failed
 del /f /q "runtime\node.zip" >nul 2>&1
 rmdir /s /q "runtime\.extract" >nul 2>&1
 set "AB_RT=%CD%\runtime\%AB_NODE_NAME%"
-echo → 用意できました（Node.js %AB_NODE_VER%）
+echo �� �p�ӂł��܂����iNode.js %AB_NODE_VER%�j
 echo.
 goto :rt_use
 
 :fetch_failed
-echo → Node.js を自動で用意できませんでした（インターネットにつながっているか確かめてください）。
+echo �� Node.js �������ŗp�ӂł��܂���ł����i�C���^�[�l�b�g�ɂȂ����Ă��邩�m���߂Ă��������j�B
 if exist "runtime\node.zip.part" del /f /q "runtime\node.zip.part"
 if exist "runtime\node.zip" del /f /q "runtime\node.zip"
 if exist "runtime\.extract" rmdir /s /q "runtime\.extract"
@@ -196,25 +199,25 @@ if exist "runtime\%AB_NODE_NAME%" rmdir /s /q "runtime\%AB_NODE_NAME%"
 rmdir "runtime" >nul 2>&1
 if "%NODE_MAJOR%"=="0" goto :nonode
 if %NODE_MAJOR% LSS 20 goto :oldnode
-echo → パソコンに入っている Node.js（%NODE_VER%）で、このまま進めます。
+echo �� �p�\�R���ɓ����Ă��� Node.js�i%NODE_VER%�j�ŁA���̂܂ܐi�߂܂��B
 echo.
 goto :node_ok
 
 :nonode
 echo.
-echo 【準備が必要です】Node.js が入っていません。
-echo Node.js のインストーラーをダウンロードします。開いたら案内どおりに入れて、もう一度このファイルをダブルクリックしてください。
-echo （会社のパソコンでは、ネットワークの制限で自動の用意が止められていることがあります。その場合は社内のご担当にご相談ください）
+echo �y�������K�v�ł��zNode.js �������Ă��܂���B
+echo Node.js �̃C���X�g�[���[���_�E�����[�h���܂��B�J������ē��ǂ���ɓ���āA������x���̃t�@�C�����_�u���N���b�N���Ă��������B
+echo �i��Ђ̃p�\�R���ł́A�l�b�g���[�N�̐����Ŏ����̗p�ӂ��~�߂��Ă��邱�Ƃ�����܂��B���̏ꍇ�͎Г��̂��S���ɂ����k���������j
 start "" "https://nodejs.org/dist/%AB_NODE_VER%/node-%AB_NODE_VER%-x64.msi"
 echo.
 pause
 exit /b 1
 
 :oldnode
-rem Node.js 20 未満では部品（better-sqlite3 など）が動かないため、入れ直してもらう
+rem Node.js 20 �����ł͕��i�ibetter-sqlite3 �Ȃǁj�������Ȃ����߁A���꒼���Ă��炤
 echo.
-echo 【準備が必要です】Node.js が古いため動きません。いま: v%NODE_MAJOR% / 必要: 20 以上
-echo Node.js のインストーラーをダウンロードします。開いたら案内どおりに入れ直して、もう一度このファイルをダブルクリックしてください。
+echo �y�������K�v�ł��zNode.js ���Â����ߓ����܂���B����: v%NODE_MAJOR% / �K�v: 20 �ȏ�
+echo Node.js �̃C���X�g�[���[���_�E�����[�h���܂��B�J������ē��ǂ���ɓ��꒼���āA������x���̃t�@�C�����_�u���N���b�N���Ă��������B
 start "" "https://nodejs.org/dist/%AB_NODE_VER%/node-%AB_NODE_VER%-x64.msi"
 echo.
 pause
@@ -222,16 +225,16 @@ exit /b 1
 
 :install_failed
 echo.
-echo 準備に失敗しました。インターネットにつながっているか確かめて、もう一度このファイルをダブルクリックしてください。
-echo 会社のパソコンでは、ネットワークの制限で止められていることがあります。社内のご担当に、github.com・nodejs.org・registry.npmjs.org・cdn.playwright.dev への接続の許可をご相談ください。
-echo それでも失敗する場合は、この画面を写真に撮って配布元に送ってください。
+echo �����Ɏ��s���܂����B�C���^�[�l�b�g�ɂȂ����Ă��邩�m���߂āA������x���̃t�@�C�����_�u���N���b�N���Ă��������B
+echo ��Ђ̃p�\�R���ł́A�l�b�g���[�N�̐����Ŏ~�߂��Ă��邱�Ƃ�����܂��B�Г��̂��S���ɁAgithub.com�Enodejs.org�Eregistry.npmjs.org�Ecdn.playwright.dev �ւ̐ڑ��̋��������k���������B
+echo ����ł����s����ꍇ�́A���̉�ʂ��ʐ^�ɎB���Ĕz�z���ɑ����Ă��������B
 pause
 exit /b 1
 
 :notextracted
-echo 【準備が必要です】ApoBoost のファイルがそろっていません。
-echo zip の中から直接開いている可能性があります。
-echo zip を右クリック →「すべて展開」で展開し、できたフォルダの中の「ApoBoost起動.bat」をダブルクリックしてください。
+echo �y�������K�v�ł��zApoBoost �̃t�@�C����������Ă��܂���B
+echo zip �̒����璼�ڊJ���Ă���\��������܂��B
+echo zip ���E�N���b�N ���u���ׂēW�J�v�œW�J���A�ł����t�H���_�̒��́uApoBoost�N��.bat�v���_�u���N���b�N���Ă��������B
 echo.
 pause
 exit /b 1
