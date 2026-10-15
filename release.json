@@ -1,14 +1,14 @@
 {
-  "version": "1.0.24",
-  "notes": "Windowsで、インストールの最後に「いま起動しますか？」でYを押すと画面が閉じる問題を直しました",
+  "version": "1.0.25",
+  "notes": "送信中のまま止まって進まなくなることがある問題を直しました（応答の止まるサイトがあっても、次の会社に進みます）",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-14T12:13:32.935Z",
+  "published_at": "2026-10-15T08:30:49.957Z",
   "channels": {
     "stable": {
-      "version": "1.0.24",
-      "notes": "Windowsで、インストールの最後に「いま起動しますか？」でYを押すと画面が閉じる問題を直しました",
+      "version": "1.0.25",
+      "notes": "送信中のまま止まって進まなくなることがある問題を直しました（応答の止まるサイトがあっても、次の会社に進みます）",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-14T12:13:32.935Z"
+      "published_at": "2026-10-15T08:30:49.957Z"
     }
   }
 }
