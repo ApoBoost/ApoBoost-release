@@ -1,14 +1,14 @@
 {
-  "version": "1.0.25",
-  "notes": "送信中のまま止まって進まなくなることがある問題を直しました（応答の止まるサイトがあっても、次の会社に進みます）",
+  "version": "1.0.26",
+  "notes": "送れたか分からなかったフォームの判定を正確にしました（確認のポップアップ・確認画面・エラー文言）。文字数の制限やURL禁止のフォームでは、本文を自動で合わせて送り直します",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-15T08:30:49.957Z",
+  "published_at": "2026-10-15T08:54:56.528Z",
   "channels": {
     "stable": {
-      "version": "1.0.25",
-      "notes": "送信中のまま止まって進まなくなることがある問題を直しました（応答の止まるサイトがあっても、次の会社に進みます）",
+      "version": "1.0.26",
+      "notes": "送れたか分からなかったフォームの判定を正確にしました（確認のポップアップ・確認画面・エラー文言）。文字数の制限やURL禁止のフォームでは、本文を自動で合わせて送り直します",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-15T08:30:49.957Z"
+      "published_at": "2026-10-15T08:54:56.528Z"
     }
   }
 }
