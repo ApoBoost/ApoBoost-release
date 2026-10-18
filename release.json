@@ -1,14 +1,14 @@
 {
-  "version": "1.0.28",
-  "notes": "フォームのURLが入った会社で送信が止まる不具合を直しました。ブラウザが固まったら自動で起動し直します",
+  "version": "1.0.29",
+  "notes": "フォーム送信の判定と送り方を大きく改善しました（確認画面・確認窓の送信、送れていない会社の確定、誤ったフォームへの送信防止など）",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-18T10:32:09.112Z",
+  "published_at": "2026-10-18T11:44:38.373Z",
   "channels": {
     "stable": {
-      "version": "1.0.28",
-      "notes": "フォームのURLが入った会社で送信が止まる不具合を直しました。ブラウザが固まったら自動で起動し直します",
+      "version": "1.0.29",
+      "notes": "フォーム送信の判定と送り方を大きく改善しました（確認画面・確認窓の送信、送れていない会社の確定、誤ったフォームへの送信防止など）",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-18T10:32:09.112Z"
+      "published_at": "2026-10-18T11:44:38.373Z"
     }
   }
 }
