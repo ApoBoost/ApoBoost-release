@@ -1,14 +1,14 @@
 {
-  "version": "1.0.27",
-  "notes": "問い合わせフォームの探し方を改善しました（会社以外のサイトに入らない・開けないサイトを見分ける・案内ページの先のフォームも探す）。確認画面の見落としも直しました",
+  "version": "1.0.28",
+  "notes": "フォームのURLが入った会社で送信が止まる不具合を直しました。ブラウザが固まったら自動で起動し直します",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-15T09:50:21.119Z",
+  "published_at": "2026-10-18T10:32:09.112Z",
   "channels": {
     "stable": {
-      "version": "1.0.27",
-      "notes": "問い合わせフォームの探し方を改善しました（会社以外のサイトに入らない・開けないサイトを見分ける・案内ページの先のフォームも探す）。確認画面の見落としも直しました",
+      "version": "1.0.28",
+      "notes": "フォームのURLが入った会社で送信が止まる不具合を直しました。ブラウザが固まったら自動で起動し直します",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-15T09:50:21.119Z"
+      "published_at": "2026-10-18T10:32:09.112Z"
     }
   }
 }
