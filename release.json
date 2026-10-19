@@ -1,14 +1,14 @@
 {
-  "version": "1.0.30",
-  "notes": "長時間送り続けると遅くなる問題を直しました（フォーム用のブラウザを定期的に新しくします）",
+  "version": "1.0.31",
+  "notes": "送信がだんだん遅くなる・止まる問題を直しました（裏で残り続けるブラウザを確実に終わらせます）",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-19T05:19:58.954Z",
+  "published_at": "2026-10-19T09:54:33.560Z",
   "channels": {
     "stable": {
-      "version": "1.0.30",
-      "notes": "長時間送り続けると遅くなる問題を直しました（フォーム用のブラウザを定期的に新しくします）",
+      "version": "1.0.31",
+      "notes": "送信がだんだん遅くなる・止まる問題を直しました（裏で残り続けるブラウザを確実に終わらせます）",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-19T05:19:58.954Z"
+      "published_at": "2026-10-19T09:54:33.560Z"
     }
   }
 }
