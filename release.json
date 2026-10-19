@@ -1,14 +1,14 @@
 {
-  "version": "1.0.29",
-  "notes": "フォーム送信の判定と送り方を大きく改善しました（確認画面・確認窓の送信、送れていない会社の確定、誤ったフォームへの送信防止など）",
+  "version": "1.0.30",
+  "notes": "長時間送り続けると遅くなる問題を直しました（フォーム用のブラウザを定期的に新しくします）",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-18T11:44:38.373Z",
+  "published_at": "2026-10-19T05:19:58.954Z",
   "channels": {
     "stable": {
-      "version": "1.0.29",
-      "notes": "フォーム送信の判定と送り方を大きく改善しました（確認画面・確認窓の送信、送れていない会社の確定、誤ったフォームへの送信防止など）",
+      "version": "1.0.30",
+      "notes": "長時間送り続けると遅くなる問題を直しました（フォーム用のブラウザを定期的に新しくします）",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-18T11:44:38.373Z"
+      "published_at": "2026-10-19T05:19:58.954Z"
     }
   }
 }
