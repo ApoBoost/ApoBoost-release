@@ -1,14 +1,14 @@
 {
-  "version": "1.0.32",
-  "notes": "会社数の多いキャンペーンの画面が開くのに時間がかかり、その間送信も遅くなる問題を直しました",
+  "version": "1.0.33",
+  "notes": "ログイン画面に「パスワードを忘れた」を追加（起動したパソコンの黒い画面に出る番号で、新しいパスワードに変えられます）",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-27T04:52:53.357Z",
+  "published_at": "2026-10-28T14:46:27.117Z",
   "channels": {
     "stable": {
-      "version": "1.0.32",
-      "notes": "会社数の多いキャンペーンの画面が開くのに時間がかかり、その間送信も遅くなる問題を直しました",
+      "version": "1.0.33",
+      "notes": "ログイン画面に「パスワードを忘れた」を追加（起動したパソコンの黒い画面に出る番号で、新しいパスワードに変えられます）",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-27T04:52:53.357Z"
+      "published_at": "2026-10-28T14:46:27.117Z"
     }
   }
 }
