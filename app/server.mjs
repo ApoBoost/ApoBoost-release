@@ -1,4 +1,4 @@
-// ApoBoost v1.0.33 — © 2026 ApoBoost. All rights reserved. 無断の複製・改変・再配布・転売・解析を禁じます（LICENSE・利用規約）。
+// ApoBoost v1.0.34 — © 2026 ApoBoost. All rights reserved. 無断の複製・改変・再配布・転売・解析を禁じます（LICENSE・利用規約）。
 var xu=Object.defineProperty;var Vt=(e,t,n)=>()=>{if(n)throw n[0];try{return e&&(t=e(e=0)),t}catch(s){throw n=[s],s}};var wu=(e,t)=>{for(var n in t)xu(e,n,{get:t[n],enumerable:!0})};import Su from"better-sqlite3";import Ke from"node:fs";import Qe from"node:path";function $u(){let e=Qe.join(ke,"restore-pending.txt"),t=Qe.join(ke,"form-outreach.db"),n=Qe.join(ke,"backups"),s="";try{s=Ke.existsSync(e)?Ke.readFileSync(e,"utf8").trim():""}catch{return}if(s)try{let r=Qe.join(n,Qe.basename(s));if(Ke.existsSync(r)){if(Ke.existsSync(t)){let a=new Date(Date.now()+324e5).toISOString();Ke.mkdirSync(n,{recursive:!0}),Ke.copyFileSync(t,Qe.join(n,`apoboost-${a.slice(0,10)}_${a.slice(11,13)}${a.slice(14,16)}-before-restore.db`))}for(let a of["-wal","-shm"]){let i=t+a;Ke.existsSync(i)&&Ke.rmSync(i)}Ke.copyFileSync(r,t),console.log(`[apoboost] \u30D0\u30C3\u30AF\u30A2\u30C3\u30D7\u300C${Qe.basename(s)}\u300D\u304B\u3089\u5FA9\u5143\u3057\u307E\u3057\u305F`)}}catch(r){console.error("[apoboost] \u5FA9\u5143\u306B\u5931\u6557\u3057\u307E\u3057\u305F:",r)}finally{try{Ke.rmSync(e)}catch{}}}function C(){return qt||(Ke.mkdirSync(st,{recursive:!0}),Ke.mkdirSync(Fs,{recursive:!0}),$u(),qt=new Su(Qe.join(ke,"form-outreach.db")),qt.pragma("journal_mode = WAL"),qt.pragma("foreign_keys = ON"),vu(qt),qt)}function vu(e){e.exec(`
   CREATE TABLE IF NOT EXISTS settings (
     key TEXT PRIMARY KEY,
@@ -976,7 +976,9 @@ pre{white-space:pre-wrap;background:var(--c-surface-2);padding:12px;border-radiu
 #fx-globe spline-viewer{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s}
 #fx-globe spline-viewer.on{opacity:1}
 .box{position:relative;z-index:1;box-shadow:0 1px 2px rgba(6,34,86,.05),0 24px 60px -24px rgba(6,34,86,.35)}
-@media (min-width:900px){body{padding-left:56vw}}
+/* \u4E0B\u306E\u4E00\u884C\uFF08\u8A31\u8AFE\u5148\u30FB\u304A\u8A66\u3057\u671F\u9593\u30FB\u8457\u4F5C\u6A29\uFF09\u306F\u53F3\u306E\u767D\u3044\u9762\u3060\u3051\u306B\u7F6E\u304F\u3002\u5168\u5E45\u306E\u307E\u307E\u3060\u3068\u5DE6\u534A\u5206\u304C\u5730\u7403\u306E\u9762\u306E\u4E0B\u306B\u96A0\u308C\u3066\u8AAD\u3081\u306A\u304B\u3063\u305F */
+.foot{z-index:1;padding:0 12px}
+@media (min-width:900px){body{padding-left:56vw}.foot{left:56vw}}
 /* \u72ED\u3044\u753B\u9762\u3067\u306F\u5730\u7403\u3092\u5168\u9762\u306E\u80CC\u666F\u306B\u3057\u3066\u3001\u305D\u306E\u4E0A\u306B\u30ED\u30B0\u30A4\u30F3\u306E\u7BB1\u3092\u7F6E\u304F */
 @media (max-width:899px){#fx-globe{width:100%}}
 </style>

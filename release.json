@@ -1,14 +1,14 @@
 {
-  "version": "1.0.33",
-  "notes": "ログイン画面に「パスワードを忘れた」を追加（起動したパソコンの黒い画面に出る番号で、新しいパスワードに変えられます）",
+  "version": "1.0.34",
+  "notes": "ログイン画面の下の一行（お試し期間・許諾先）が、左の地球の下に隠れて読めなかったのを直しました",
   "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-  "published_at": "2026-10-28T14:46:27.117Z",
+  "published_at": "2026-10-30T03:28:08.254Z",
   "channels": {
     "stable": {
-      "version": "1.0.33",
-      "notes": "ログイン画面に「パスワードを忘れた」を追加（起動したパソコンの黒い画面に出る番号で、新しいパスワードに変えられます）",
+      "version": "1.0.34",
+      "notes": "ログイン画面の下の一行（お試し期間・許諾先）が、左の地球の下に隠れて読めなかったのを直しました",
       "zip": "https://github.com/ApoBoost/ApoBoost-release/archive/refs/heads/main.zip",
-      "published_at": "2026-10-28T14:46:27.117Z"
+      "published_at": "2026-10-30T03:28:08.254Z"
     }
   }
 }
